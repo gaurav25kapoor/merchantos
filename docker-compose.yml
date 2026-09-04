@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: merchantos-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: merchantos
+      POSTGRES_PASSWORD: merchantos
+      POSTGRES_DB: merchantos
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - merchantos_postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U merchantos -d merchantos"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+volumes:
+  merchantos_postgres_data:
